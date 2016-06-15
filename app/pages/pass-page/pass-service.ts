@@ -7,7 +7,7 @@ import {Storage, LocalStorage} from 'ionic-angular';
 export class PassService {
   
   
-  private data:[Pass];
+  data:[Pass];
   private local:Storage;
   
   constructor(private http:Http){
@@ -56,5 +56,13 @@ export class PassService {
 							() => console.log('Completed'));
 		}
 	)
+  }
+  
+  save(){
+	this.saveData();
+  }
+  
+  private saveData(){
+	this.local.set('moves', JSON.stringify(this.data));
   }
 }

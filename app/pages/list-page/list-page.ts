@@ -7,7 +7,7 @@ import {PassService} from '../pass-page/pass-service';
   templateUrl: 'build/pages/list-page/list-page.html'
 })
 export class ListPage {
-  private data:[Pass];
+  private data:Pass[];
   private service: PassService;
   
   constructor(private _navController: NavController, service: PassService) {
@@ -19,7 +19,9 @@ export class ListPage {
   }
   
   add(){
-	this._navController.push(PassPage, {pass: new Pass()});
+    var pass:Pass = new Pass();
+	pass.is_new = true;
+	this._navController.push(PassPage, {pass: pass});
   }
 
   edit(pass: Pass){
@@ -29,6 +31,7 @@ export class ListPage {
   remove(index){
 	if (index > -1) {
 	   this.data.splice(index, 1);
+	   this.service.save();
 	}
   }
   
@@ -40,6 +43,9 @@ export class ListPage {
 export class Pass {
 	is_break: boolean;
 	end_position: EndPosition;
+	name: string;
+	length: number;
+	is_new: boolean;
 }
 
 export enum EndPosition{
