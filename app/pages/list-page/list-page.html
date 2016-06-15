@@ -1,0 +1,24 @@
+<ion-navbar *navbar>
+  <ion-title>Liste des passes</ion-title>
+</ion-navbar>
+
+<ion-content class="page1">
+	<ion-list>
+		<ion-item-sliding *ngFor="let d of data; let i=index">
+			<ion-item>
+				{{d.name}}
+			</ion-item>
+			<ion-item-options>
+				<button danger (click)="remove(i)">
+					<ion-icon name="close"></ion-icon>
+					Supprimer
+				</button>
+				<button primary (click)="edit(d)">
+					<ion-icon name="create"></ion-icon>
+					Editer
+				</button>
+			</ion-item-options>
+		</ion-item-sliding>
+	</ion-list>
+  <button (click)="add()">Add passe</button>
+</ion-content>

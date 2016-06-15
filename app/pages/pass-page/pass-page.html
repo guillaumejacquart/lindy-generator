@@ -1,0 +1,24 @@
+<ion-navbar *navbar>
+  <ion-title>Passe {{pass.name}}</ion-title>
+</ion-navbar>
+
+<ion-content>
+	<form>
+		<ion-list>
+
+			<ion-item>
+				<ion-label floating>Nom</ion-label>
+				<ion-input type="text" [(ngModel)]="pass.name"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label floating>Password</ion-label>
+				<ion-input type="password"></ion-input>
+			</ion-item>
+
+			</ion-list>
+		<div padding="">
+			<button block="" type="submit" class="disable-hover button button-default button-block"><span class="button-inner">Create Account</span><ion-button-effect></ion-button-effect></button>
+		</div>
+	</form>
+</ion-content>
