@@ -1,35 +1,21 @@
 import {Component} from '@angular/core';
 import {NavController} from 'ionic-angular';
 import {PassPage} from '../pass-page/pass-page';
-import {Http, HTTP_PROVIDERS} from '@angular/http';
-import {Storage, LocalStorage} from 'ionic-angular';
+import {PassService} from '../pass-page/pass-service';
 
 @Component({
   templateUrl: 'build/pages/list-page/list-page.html'
 })
 export class ListPage {
   private data:[Pass];
-  private local:Storage;
-
-  constructor(private _navController: NavController, private http: Http) {
-	this.local = new Storage(LocalStorage);
+  private service: PassService;
+  
+  constructor(private _navController: NavController, service: PassService) {
+	this.service = service;	
 	var that = this;
-	try{
-		this.local.get('moves').then((dataString) => {		
-			if(dataString){
-				var localData = JSON.parse(dataString);
-				that.data = localData;
-			} else {
-				that.getData();
-			}
-		}, (err) => {
-			that.getData();
-		});
-	}
-	catch(e){
-		that.getData();
-	}
-						
+	this.service.getPasses().then(function(data){
+		that.data = data;
+	});
   }
   
   add(){
@@ -48,17 +34,15 @@ export class ListPage {
   
   getData(){
 	var that = this;
-	that.http.get('moves.json')
-		.map(res => res.json())
-		.subscribe(data => {							
-						that.data = data;							
-						that.local.set('moves', JSON.stringify(data));
-					},
-					err => console.log(err),
-					() => console.log('Completed'));
   }
 }
 
 export class Pass {
 	is_break: boolean;
+	end_position: EndPosition;
+}
+
+export enum EndPosition{
+	FaceToFace,
+	ClosePosition
 }

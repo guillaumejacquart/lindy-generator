@@ -15,4 +15,8 @@ export class PassPage {
 
   ionViewWillEnter(){
   }
+  
+  onSubmit() { 
+  }
+
 }

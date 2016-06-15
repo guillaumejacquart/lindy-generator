@@ -3,22 +3,35 @@
 </ion-navbar>
 
 <ion-content>
-	<form>
+	<form (ngSubmit)="onSubmit()">
 		<ion-list>
 
 			<ion-item>
-				<ion-label floating>Nom</ion-label>
+				<ion-label>Nom</ion-label>
 				<ion-input type="text" [(ngModel)]="pass.name"></ion-input>
 			</ion-item>
 
 			<ion-item>
-				<ion-label floating>Password</ion-label>
-				<ion-input type="password"></ion-input>
+				<ion-label>Nombre de temps</ion-label>
+				<ion-input type="number" [(ngModel)]="pass.length"></ion-input>
+			</ion-item>
+
+			<ion-item>
+				<ion-label>Figure de break</ion-label>
+				<ion-toggle [(ngModel)]="pass.is_break"></ion-toggle>
+			</ion-item>
+
+			<ion-item>
+				<ion-label>Position à l'arrivée</ion-label>
+				<ion-select [(ngModel)]="pass.end_position">
+				  <ion-option value="0">Face to face</ion-option>
+				  <ion-option value="1">Close position</ion-option>
+				</ion-select>
 			</ion-item>
 
 			</ion-list>
 		<div padding="">
-			<button block="" type="submit" class="disable-hover button button-default button-block"><span class="button-inner">Create Account</span><ion-button-effect></ion-button-effect></button>
+			<button block="" type="submit" class="disable-hover button button-default button-block"><span class="button-inner">Enregistrer</span><ion-button-effect></ion-button-effect></button>
 		</div>
 	</form>
 </ion-content>
