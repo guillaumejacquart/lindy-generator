@@ -9,6 +9,7 @@ export class PassService {
 
   data: [Pass];
   private local: Storage;
+  private number_combinations: number[][] = [];
 
   constructor(private http: Http) {
   }
@@ -22,6 +23,7 @@ export class PassService {
 					if (dataString) {
 						var localData = JSON.parse(dataString);
 						that.data = localData;
+						that.getData();
 						resolve(that.data);
 					} else {
 						that.getData().then(function (data) {
@@ -48,8 +50,13 @@ export class PassService {
 			that.http.get('moves.json')
 				.map(res => res.json())
 				.subscribe(data => {
-					that.data = data;
-					that.local.set('moves', JSON.stringify(data));
+					if(!that.data || data.length > that.data.length){
+						that.data = data;
+						that.local.set('moves', JSON.stringify(data));
+					}
+					if(!this.number_combinations.length){
+						that.getArraysCombinations();
+					}
 					resolve(that.data);
 				},
 				err => console.log(err),
@@ -61,6 +68,54 @@ export class PassService {
   save() {
 		this.saveData();
   }
+	
+	getArraysCombinations(){
+		var numbers_unique: number[] = [];
+		this.data.sort((p1, p2) => {
+			if (p1.length < p2.length)
+				return -1;
+			if (p1.length > p2.length)
+				return 1;
+
+			return 0;
+		}).forEach(function(p: Pass){
+			if(numbers_unique.indexOf(p.length) == -1){
+				numbers_unique.push(p.length);
+			}
+		});
+		
+		var total = 32;
+		
+		var vector_length = numbers_unique.length;
+
+		var min = Math.min.apply(null, numbers_unique);
+		var base = Math.ceil(total / min) + 1;
+
+		var i = 1;
+		var max = Math.pow(base, (vector_length));
+		
+		this.number_combinations = [];
+		while(i < max){	
+			var numInBase = i.toString(base);
+			var vector: number[] = [];
+			for(var j = 0; j < vector_length; j++){
+				vector.push(parseInt(numInBase[j]));
+			}
+			var sum = multiplyVector(numbers_unique, vector);
+			if(sum == 32){		
+				this.number_combinations.push(vector);
+			}
+			i+= 1;
+		}
+
+		function multiplyVector(arr1, arr2){	
+			var sum = 0;
+			for(var i=0; i< arr1.length; i++) {
+				sum += arr1[i]*arr2[i];
+			}
+			return sum;
+		}
+	}
 	
 	generateChain(length:number):Pass[]{
 		var count:number = 0;

@@ -1,2 +1,11 @@
-name;length;is_break;end_position
-Tuck-turn;6;0;0
+name;length;is_break;start_position;end_position;
+Tuck-turn;6;0;1;0
+Passage sous le bras;6;0;0;0
+Swing out (ouvert);8;0;0;0
+Swing out (fermé);8;0;1;0
+Lindy circle;8;0;0;1
+Basique 8;8;0;1;1
+Basique 6;6;0;1;1
+He goes;4;0;1;0
+She goes;4;0;1;0
+Texas Tommy;8;0;0;0
