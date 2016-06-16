@@ -22,6 +22,14 @@
 			</ion-item>
 
 			<ion-item>
+				<ion-label>Position au départ</ion-label>
+				<ion-select [(ngModel)]="pass.start_position">
+				  <ion-option value="0">Face to face</ion-option>
+				  <ion-option value="1">Close position</ion-option>
+				</ion-select>
+			</ion-item>
+
+			<ion-item>
 				<ion-label>Position à l'arrivée</ion-label>
 				<ion-select [(ngModel)]="pass.end_position">
 				  <ion-option value="0">Face to face</ion-option>

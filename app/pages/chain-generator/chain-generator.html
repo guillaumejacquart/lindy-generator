@@ -1,0 +1,16 @@
+<ion-navbar *navbar>
+  <ion-title>Générer enchainement</ion-title>
+</ion-navbar>
+
+<ion-content>  
+	<div padding>
+    <button class="button button-block button-secondary" (click)="generate()">Générer un enchainement</button>
+	</div>
+  <ion-list>
+		<ion-item-sliding *ngFor="let d of data; let i=index">
+			<ion-item>
+				{{d.name}}
+			</ion-item>
+		</ion-item-sliding>
+	</ion-list>
+</ion-content>

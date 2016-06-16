@@ -21,6 +21,10 @@ export class ListPage {
   add(){
     var pass:Pass = new Pass();
 	pass.is_new = true;
+	pass.is_break = false;
+	pass.length = 4;
+	pass.start_position = PassPosition.ClosePosition;
+	pass.end_position = PassPosition.FaceToFace;
 	this._navController.push(PassPage, {pass: pass});
   }
 
@@ -42,13 +46,14 @@ export class ListPage {
 
 export class Pass {
 	is_break: boolean;
-	end_position: EndPosition;
+	end_position: PassPosition;
+	start_position: PassPosition;
 	name: string;
 	length: number;
 	is_new: boolean;
 }
 
-export enum EndPosition{
+export enum PassPosition{
 	FaceToFace,
 	ClosePosition
 }
