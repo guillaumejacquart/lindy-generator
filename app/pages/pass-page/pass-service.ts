@@ -55,9 +55,6 @@ export class PassService {
 						that.data = data;
 						that.local.set('moves', JSON.stringify(data));
 					}
-					if(!this.number_combinations.length){
-						that.getArraysCombinations();
-					}
 					resolve(that.data);
 				},
 				err => console.log(err),
@@ -69,57 +66,6 @@ export class PassService {
   save() {
 		this.saveData();
   }
-	
-	getArraysCombinations(){
-		var that = this;
-		this.numbers_unique = [];
-		this.data.sort((p1, p2) => {
-			if (p1.length < p2.length)
-				return -1;
-			if (p1.length > p2.length)
-				return 1;
-
-			return 0;
-		}).forEach(function(p: Pass){
-			if(that.numbers_unique.indexOf(p.length) == -1){
-				that.numbers_unique.push(p.length);
-			}
-		});
-		
-		var total = 32;
-		
-		var vector_length = that.numbers_unique.length;
-
-		var min = Math.min.apply(null, that.numbers_unique);
-		var base = Math.ceil(total / min) + 1;
-
-		var i = 1;
-		var max = Math.pow(base, (vector_length));
-		
-		this.number_combinations = [];
-		while(i < max){	
-			var numInBase = i.toString(base);
-			var vector: number[] = [];
-			for(var j = 0; j < vector_length; j++){
-				vector.push(parseInt(numInBase[j]));
-			}
-			var sum = multiplyVector(that.numbers_unique, vector);
-			if(sum == total){		
-				this.number_combinations.push(vector);
-			}
-			i+= 1;
-		}
-		
-		generateChain2(total);
-
-		function multiplyVector(arr1, arr2){	
-			var sum = 0;
-			for(var i=0; i< arr1.length; i++) {
-				sum += arr1[i]*arr2[i];
-			}
-			return sum;
-		}
-	}
 	
 	generateChain(length:number):Pass[]{
 		var count:number = 0;
@@ -133,11 +79,8 @@ export class PassService {
 		var minLength = Math.min.apply(null, uniqueLengths);
 		var maxLength = Math.max.apply(null, uniqueLengths);
 		
-		while(count < length){
-			var currentArray = data;		
-			if(length - count <= maxLength){
-				currentArray = data.filter((p) => p.length == (length - count));
-			}
+		while(count < length - 2 	* maxLength){
+			var currentArray = data;	
 			
 			if(lastPass){
 				currentArray = currentArray.filter((p) => p.start_position == lastPass.end_position);
@@ -152,38 +95,35 @@ export class PassService {
 			res.push(lastPass);
 			count += lastPass.length;
 		}
+				
+		var leftCount = length - count;
+		var hasFound = false;
+		for(var i=0;i<data.length;i++){
+			for(var j=0;j<data.length;j++){
+				var move1 = data[i];
+				var move2 = data[j];
+				if(move1.start_position == lastPass.end_position 
+					 && move2.start_position == move1.end_position
+					 && (move1.length + move2.length == leftCount
+					 		|| move1.length == leftCount)) {
+						 res.push(move1);
+						 if(move1.length != leftCount){
+						 	res.push(move2);
+						 }
+						 hasFound = true;
+						 break;
+				};
+			}
+			
+			if(hasFound){
+				break;
+			}
+		}
 		
 		return res;
-	}
-	
-	generateChain2(length:number):Pass[]{
-		var that = this;
-		var combis_passes: Pass[][] = [];
-		this.number_combinations.forEach((c)=>{
-			var combi_passes = Pass[][];
-			c.forEach((n, i) => {
-				var passes = that.data.filter((p) => {
-					return p.length == that.number_uniques[i];
-				}));
-				
-				for(var j=0;j<n;j++){
-					var combi_pass: Pass[][] = [];
-					for(var k=0;k<passes.length;k++){
-						if(!combi_pass[j]){
-							combi_pass[j] = [];
-						}
-						combi_pass[j]
-					}
-				}
-			});
-		});
-		console.log(combis_passes);
-		
-		return combis_passes;
 	}
 
   private saveData() {
 		this.local.set('moves', JSON.stringify(this.data));
-		this.getArraysCombinations();
   }
 }

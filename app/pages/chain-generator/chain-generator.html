@@ -9,7 +9,21 @@
   <ion-list>
 		<ion-item-sliding *ngFor="let d of data; let i=index">
 			<ion-item>
-				{{d.name}}
+				<h2>{{d.name}}</h2>
+				<div class="item-icons-custom">
+					<div class="item-icon-custom">
+						<span>{{d.length}}</span>
+						<ion-icon name="musical-note"></ion-icon>
+					</div>
+					<div class="item-icon-custom">
+						<span>{{d.start_position == 1 ? 'Close position' : 'Face to face'}}</span>
+						<ion-icon name="open"></ion-icon>
+					</div>
+					<div class="item-icon-custom">
+						<span>{{d.end_position == 1 ? 'Close position' : 'Face to face'}}</span>
+						<ion-icon name="close"></ion-icon>
+					</div>
+				</div>
 			</ion-item>
 		</ion-item-sliding>
 	</ion-list>
