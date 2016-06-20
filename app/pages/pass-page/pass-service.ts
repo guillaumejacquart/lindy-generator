@@ -98,6 +98,7 @@ export class PassService {
 				
 		var leftCount = length - count;
 		var hasFound = false;
+		shuffle(data);
 		for(var i=0;i<data.length;i++){
 			for(var j=0;j<data.length;j++){
 				var move1 = data[i];
@@ -117,6 +118,20 @@ export class PassService {
 			
 			if(hasFound){
 				break;
+			}
+		}
+		
+		/**
+		 * Shuffles array in place.
+		 * @param {Array} a items The array containing the items.
+		 */
+		function shuffle(a) {
+			var j, x, i;
+			for (i = a.length; i; i -= 1) {
+				j = Math.floor(Math.random() * i);
+				x = a[i - 1];
+				a[i - 1] = a[j];
+				a[j] = x;
 			}
 		}
 		

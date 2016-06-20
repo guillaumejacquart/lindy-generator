@@ -1,0 +1,1 @@
+surge --domain lindy-generator.surge.sh www
