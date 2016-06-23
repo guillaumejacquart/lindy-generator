@@ -99,6 +99,10 @@ export class PassService {
 		var leftCount = length - count;
 		var hasFound = false;
 		shuffle(data);
+		
+		var combiBreak = [];
+		var combiNonBreak = [];
+		
 		for(var i=0;i<data.length;i++){
 			for(var j=0;j<data.length;j++){
 				var move1 = data[i];
@@ -107,18 +111,33 @@ export class PassService {
 					 && move2.start_position == move1.end_position
 					 && (move1.length + move2.length == leftCount
 					 		|| move1.length == leftCount)) {
-						 res.push(move1);
-						 if(move1.length != leftCount){
-						 	res.push(move2);
-						 }
-						 hasFound = true;
-						 break;
+						
+						if(move2.is_break || move1.length == leftCount && move1.is_break){
+							combiBreak.push(move1);
+							if(move1.length != leftCount){
+								combiBreak.push(move2);
+							}
+							hasFound = true;
+							break;
+						}
+						else{
+							if(!combiNonBreak.length){
+								combiNonBreak.push(move1);
+								if(move1.length != leftCount){
+									combiNonBreak.push(move2);
+								}
+							}
+						}
 				};
 			}
 			
 			if(hasFound){
 				break;
 			}
+		}
+		
+		if(!hasFound && combiNonBreak.length){
+			combiNonBreak.forEach(p => res.push(p));
 		}
 		
 		/**
